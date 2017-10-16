@@ -21,3 +21,7 @@ endif ()
 # compile to target
 add_executable(CatDevices CatDevices.h CatDevices.cpp)
 target_link_libraries(CatDevices portaudio)
+
+# compile to target
+add_executable(PcmPlayer PcmPlayer.h PcmPlayer.cpp)
+target_link_libraries(PcmPlayer portaudio)

@@ -16,12 +16,12 @@ file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 
 link_directories(/usr/local/lib)
 
-
-
 # compile to target
 add_executable(${APP_NAME} ${FILES_INCLUDE} ${FILES_SOURCES})
-target_link_libraries(${APP_NAME}
+if(RPI3_MATRIX_CREATOR)
+    target_link_libraries(${APP_NAME}
         matrix_creator_hal
         wiringPi
         wiringPiDev
         )
+endif(RPI3_MATRIX_CREATOR)

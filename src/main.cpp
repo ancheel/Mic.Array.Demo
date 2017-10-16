@@ -11,8 +11,10 @@ int main(void)
 {
     gLogger("Main", "begin");
 
+#ifdef RPI3_MATRIX_CREATOR
     MicMatrixCreator mc;
     mc.Start();
+#endif
 
     gLogger("Main", "end");
     return 0;

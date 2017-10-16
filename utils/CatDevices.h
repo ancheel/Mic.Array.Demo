@@ -4,45 +4,12 @@
 #pragma once
 
 #include "../src/Precompiled.h"
-
 #include "portaudio.h"
 
 
-
-Logger logger("CatDevices.log");
-
-
-struct CatDevices : Singleton<CatDevices> {
-public:
-    void CatPortAudioDevice() {
-        logger("Pa_GetVersionText", Pa_GetVersionText());
-
-        if (auto err = Pa_Initialize() != paNoError) {
-            throw "Pa_Initialize = err";
-        }
-
-
-        auto numDevices = Pa_GetDeviceCount();
-        logger("Numbers of Devices:", numDevices);
-
-        for (auto i = 0; i < numDevices; i++) {
-            auto deviceInfo = Pa_GetDeviceInfo(i);
-            logger("\n\t\t",
-                   "No.", i,"\n\t\t",
-                    "hostApi:", deviceInfo->hostApi,"\n\t\t",
-                   deviceInfo->name,"\n\t\t",
-                   "maxInputChannels:", deviceInfo->maxInputChannels,"\n\t\t",
-                   "maxOutputChannels:", deviceInfo->maxOutputChannels,"\n\t\t"
-            );
-        }
-    }
-};
-
-
-
-int main(void)
+struct CatDevices : Singleton<CatDevices>
 {
-    CatDevices::Get()->CatPortAudioDevice();
-    return 0;
-}
+public:
+    void CatPortAudioDevice();
+};
 

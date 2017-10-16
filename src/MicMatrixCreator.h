@@ -4,6 +4,7 @@
 
 #pragma once
 
+#ifdef RPI3_MATRIX_CREATOR
 
 #include <matrix_hal/microphone_array.h>
 #include <matrix_hal/everloop_image.h>
@@ -81,3 +82,4 @@ public:
         return false;
     }
 };
+#endif
