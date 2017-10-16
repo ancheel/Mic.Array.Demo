@@ -14,10 +14,20 @@ int s_thePaStreamCallback(
 
 
 PcmPlayer::PcmPlayer(const string &filePath, int nbChannel, int sampleRate)
-    : m_pcmFile(filePath, ios::binary|ios::ate)
-    , m_nbChannel(nbChannel)
+    : m_nbChannel(nbChannel)
     , m_sampleRate(sampleRate)
 {
+    if (!m_reader.Load(filePath)){
+        logger("m_reader.Load Failed");
+        throw "m_reader.Load Failed";
+    }
+
+    auto sz = m_reader.GetSize();
+    logger("m_fileSize:", sz, "bytes");
+    logger("duration:", (float)sz/sizeof(int16_t)/m_nbChannel/m_sampleRate, "seconds");
+
+
+
     logger("Pa_GetVersionText", Pa_GetVersionText());
 
     if (auto err = Pa_Initialize() != paNoError) {
@@ -27,23 +37,13 @@ PcmPlayer::PcmPlayer(const string &filePath, int nbChannel, int sampleRate)
     logger("File Path:", filePath, "Bytes");
     logger("Numbers of Channel:", nbChannel);
     logger("Sample Rate:", sampleRate);
-
-
-    // Get File Size
-    {
-        m_fileSize = m_pcmFile.tellg();
-        m_pcmFile.seekg(0, ios::beg);
-
-        logger("m_fileSize:", m_fileSize);
-        logger("duration:", (float)m_fileSize/sizeof(int16_t)/m_nbChannel/m_sampleRate, "seconds");
-    }
 }
 
 bool PcmPlayer::OnProcess(void *output, int frameCount)
 {
     try{
         const int sz = frameCount*sizeof(int16_t)*m_nbChannel;
-        if (!m_pcmFile.read((char*)output, sz)){
+        if (!m_reader.Read((char*)output, sz)){
             m_isOver = true;
             logger("End of file");
             return false;
@@ -154,3 +154,59 @@ int main(int argc, char *argv[])
     logger("Bye");
     return 0;
 }
+
+bool SimplestFileReader::Load(const string &filePath)
+{
+    try{
+        m_pcmFile.open(filePath, ios::binary|ios::ate);
+    }
+    catch(exception &e){
+        return false;
+    }
+
+    // Get File Size
+    {
+        m_fileSize = m_pcmFile.tellg();
+        m_pcmFile.seekg(0, ios::beg);
+    }
+
+    return true;
+}
+
+bool SimplestFileReader::Read(char *buffer, size_t size)
+{
+    return !!m_pcmFile.read(buffer, size);
+}
+
+bool FileReader_ReadOnce::Load(const string &filePath){
+
+    try{
+        ifstream pcmFile(filePath, ios::binary|ios::ate);
+        m_fileSize = pcmFile.tellg();
+        pcmFile.seekg(0, ios::beg);
+        m_buffer.resize(m_fileSize);
+        pcmFile.read(m_buffer.data(), m_fileSize);
+    }
+    catch(exception &e){
+        return false;
+    }
+    return true;
+}
+
+bool FileReader_ReadOnce::Read(char *buffer, size_t size)
+{
+    if (m_fileSize==m_currPos){
+        return false;
+    }
+
+    memcpy(buffer, &(m_buffer[m_currPos]), size);
+    if (m_currPos+size> m_fileSize){
+        m_currPos=m_fileSize;
+    }
+    else{
+        m_currPos+=size;
+    }
+    return true;
+}
+
+size_t FileReader_ReadOnce::GetSize(){return m_fileSize;}
