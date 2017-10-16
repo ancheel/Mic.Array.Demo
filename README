@@ -1,0 +1,14 @@
+Circular Microphone Array for HiFi recording and local amplifying .
+
+Main Programming Language: C++11
+Target Platform: Linux
+
+
+Known target:
+ - Raspberry Pi 3 + MATRIX Creator:
+    * 8 mic
+
+
+ - RK3229 Echo Linux SDK
+    * 6 mic
+    * support ALSA / PortAudio
