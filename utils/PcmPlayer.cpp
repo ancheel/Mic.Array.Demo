@@ -14,7 +14,7 @@ int s_thePaStreamCallback(
 
 
 PcmPlayer::PcmPlayer(const string &filePath, int nbChannel, int sampleRate)
-    : m_pcmFile(filePath, ios::binary)
+    : m_pcmFile(filePath, ios::binary|ios::ate)
     , m_nbChannel(nbChannel)
     , m_sampleRate(sampleRate)
 {
@@ -24,16 +24,18 @@ PcmPlayer::PcmPlayer(const string &filePath, int nbChannel, int sampleRate)
         throw "Pa_Initialize = err";
     }
 
-    logger("File Path:", filePath);
+    logger("File Path:", filePath, "Bytes");
     logger("Numbers of Channel:", nbChannel);
     logger("Sample Rate:", sampleRate);
 
 
     // Get File Size
     {
-        m_pcmFile.seekg(ios::end);
         m_fileSize = m_pcmFile.tellg();
-        m_pcmFile.seekg(ios::beg);
+        m_pcmFile.seekg(0, ios::beg);
+
+        logger("m_fileSize:", m_fileSize);
+        logger("duration:", (float)m_fileSize/sizeof(int16_t)/m_nbChannel/m_sampleRate, "seconds");
     }
 }
 
