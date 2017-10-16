@@ -1,5 +1,8 @@
 #include "PcmPlayer.h"
 
+#include <cstring>  // for memcpy
+
+
 Logger logger("PcmPlayer.log");
 
 extern "C"
