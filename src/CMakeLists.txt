@@ -16,6 +16,10 @@ file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 
 link_directories(/usr/local/lib)
 
+
+add_defition()
+
+
 # compile to target
 add_executable(${APP_NAME} ${FILES_INCLUDE} ${FILES_SOURCES})
 if(RPI3_MATRIX_CREATOR)
