@@ -53,10 +53,13 @@ bool MicMatrixCreator::Stop() {
 
 bool MicMatrixCreator::InitPA()
 {
-
     try {
-        PaStreamParameters outputParameters;
+        if (auto err = Pa_Initialize() != paNoError) {
+            logger("Pa_Initialize = err");
+            return false;
+        }
 
+        PaStreamParameters outputParameters;
         outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
         outputParameters.channelCount = 1;
         outputParameters.sampleFormat = paInt16;
