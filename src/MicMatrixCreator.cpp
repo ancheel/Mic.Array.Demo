@@ -22,7 +22,7 @@ bool MicMatrixCreator::Start()
     matrix_hal::MicrophoneArray mics;
     m_nbSamplePerBlock=mics.NumberOfSamples();
     mics.Setup(&bus);
-    mics.SetGain(8); // ?
+    //mics.SetGain(8); // ?
 
 
     if (!InitPA()){
@@ -31,18 +31,16 @@ bool MicMatrixCreator::Start()
 
     for (;;){
         mics.Read(); /* Reading 8-mics buffer from de FPGA */
-
-
-
         auto err = Pa_WriteStream( m_stream, &(mics.Beam(0)), m_nbSamplePerBlock );
+	//static vector<int16_t> emptyBuffer(1024,0);
+        //auto err = Pa_WriteStream( m_stream, emptyBuffer.data(), m_nbSamplePerBlock );
         if( err ) {
             logger("Pa_WriteStream error:", err);
-            break;
+	    if (err!=-9980){
+                break;
+            }
         }
-
     }
-
-
 
     return true;
 }
@@ -85,6 +83,7 @@ bool MicMatrixCreator::InitPA()
     }
     catch (exception &e) {
         logger(e.what());
+	return false;
     }
 
 

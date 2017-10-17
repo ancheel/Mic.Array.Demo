@@ -7,6 +7,7 @@
 Logger logger("Mic.Array.Demo.log");
 
 
+// tips: amixer -c 0 set PCM 0db
 int main(void)
 {
     logger("Main", "begin");
