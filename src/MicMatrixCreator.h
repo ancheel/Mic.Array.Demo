@@ -16,7 +16,7 @@
 
 #include "Mic.h"
 
-using namespace matrix_hal
+using namespace matrix_hal;
 struct MicMatrixCreator : Mic
 {
 public:

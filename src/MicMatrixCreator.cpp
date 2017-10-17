@@ -22,16 +22,6 @@ bool MicMatrixCreator::Start()
     matrix_hal::MicrophoneArray mics;
     m_nbSamplePerBlock=mics.NumberOfSamples();
     mics.Setup(&bus);
-
-    matrix_hal::Everloop everloop;
-    everloop.Setup(&bus);
-
-    matrix_hal::EverloopImage image1d;
-    int j = 0;
-    uint64_t instantE = 0;
-    uint64_t avgEnergy = 0;
-    std::valarray<uint64_t> localAverage (20);
-    localAverage = 0;
     mics.SetGain(8); // ?
 
 
@@ -44,7 +34,7 @@ bool MicMatrixCreator::Start()
 
 
 
-        err = Pa_WriteStream( m_stream, &(mics.Beam(0)), m_nbSamplePerBlock );
+        auto err = Pa_WriteStream( m_stream, &(mics.Beam(0)), m_nbSamplePerBlock );
         if( err ) {
             logger("Pa_WriteStream error:", err);
             break;

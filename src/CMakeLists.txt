@@ -17,7 +17,6 @@ file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 link_directories(/usr/local/lib)
 
 
-add_defition()
 
 
 # compile to target
@@ -27,5 +26,6 @@ if(RPI3_MATRIX_CREATOR)
         matrix_creator_hal
         wiringPi
         wiringPiDev
+	portaudio
         )
 endif(RPI3_MATRIX_CREATOR)

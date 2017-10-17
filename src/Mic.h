@@ -5,6 +5,7 @@
 #pragma once
 
 #include <portaudio.h>
+#include "Precompiled.h"
 
 struct IExtraCallback
 {
