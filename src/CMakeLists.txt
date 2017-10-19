@@ -13,19 +13,20 @@ file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 
 
 
-
+set(ExtraSysroot "")
 if(${Platform} STREQUAL "RK3229_Linux_BR")
     message("RK3229_Linux_BR")
+    set(ExtraSysroot "/tmp/sysroot/")
 else(${Platform} STREQUAL "RK3229_Linux_BR")
     # local build
-    include_directories(. /usr/local/include)
-    link_directories(/usr/local/lib)
-
     if(${Platform} STREQUAL "RPi_MATRIX_Creator")
         message("RPi_MATRIX_Creator")
     else(${Platform} STREQUAL "RPi_MATRIX_Creator")
     endif(${Platform} STREQUAL "RPi_MATRIX_Creator")
 endif(${Platform} STREQUAL "RK3229_Linux_BR")
+
+include_directories(. ${ExtraSysroot}/usr/local/include)
+link_directories(${ExtraSysroot}/usr/local/lib)
 
 
 # compile to target
