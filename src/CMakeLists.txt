@@ -7,20 +7,24 @@ project(${APP_NAME})
 set(CMAKE_CXX_STANDARD 14)
 
 
-# set header search path
-include_directories(. /usr/local/include)
 # set source files
 file(GLOB_RECURSE FILES_SOURCES *.cpp *.cc *.c)
 file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 
 
-link_directories(/usr/local/lib)
 
 
 if(${Platform} STREQUAL "RK3229_Linux_BR")
     message("RK3229_Linux_BR")
 else(${Platform} STREQUAL "RK3229_Linux_BR")
-    
+    # local build
+    include_directories(. /usr/local/include)
+    link_directories(/usr/local/lib)
+
+    if(${Platform} STREQUAL "RPi_MATRIX_Creator")
+        message("RPi_MATRIX_Creator")
+    else(${Platform} STREQUAL "RPi_MATRIX_Creator")
+    endif(${Platform} STREQUAL "RPi_MATRIX_Creator")
 endif(${Platform} STREQUAL "RK3229_Linux_BR")
 
 
