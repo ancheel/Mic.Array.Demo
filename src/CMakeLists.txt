@@ -17,6 +17,11 @@ file(GLOB_RECURSE FILES_INCLUDE *.hpp *.h)
 link_directories(/usr/local/lib)
 
 
+if(${Platform} STREQUAL "RK3229_Linux_BR")
+    message("RK3229_Linux_BR")
+else(${Platform} STREQUAL "RK3229_Linux_BR")
+    
+endif(${Platform} STREQUAL "RK3229_Linux_BR")
 
 
 # compile to target
